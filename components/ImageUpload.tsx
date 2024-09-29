@@ -108,7 +108,6 @@ export default function ImageUpload() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
-  const [debugInfo, setDebugInfo] = useState<string>("");
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -117,7 +116,6 @@ export default function ImageUpload() {
       setPlantInfo(null);
       setError(null);
       setIsCameraOpen(false);
-      setDebugInfo("Imagen cargada: " + file.name);
     }
   };
 
@@ -171,46 +169,35 @@ export default function ImageUpload() {
   };
 
   const handleIdentifyPlant = async () => {
-    if (!image) {
-      setDebugInfo("No hay imagen para identificar");
-      return;
-    }
+    if (!image) return;
 
     setLoading(true);
     setError(null);
-    setDebugInfo("Iniciando identificación de planta...");
 
     const formData = new FormData();
     formData.append("image", image);
 
     try {
-      setDebugInfo("Enviando solicitud a la API...");
       const response = await fetch("/api/identify", {
         method: "POST",
         body: formData,
       });
-
-      setDebugInfo(prevInfo => prevInfo + "\nRespuesta recibida. Status: " + response.status);
 
       if (!response.ok) {
         throw new Error("Error en la respuesta del servidor: " + response.status);
       }
 
       const data = await response.json();
-      setDebugInfo(prevInfo => prevInfo + "\nDatos recibidos de la API: " + JSON.stringify(data, null, 2));
 
       if (data && data.plantInfo) {
         const parsedPlantInfo = parsePlantInfo(data.plantInfo);
         setPlantInfo(parsedPlantInfo);
-        setDebugInfo(prevInfo => prevInfo + "\nInformación de la planta procesada correctamente");
-        setDebugInfo(prevInfo => prevInfo + "\nDatos de plantInfo parseados: " + JSON.stringify(parsedPlantInfo, null, 2));
       } else {
         throw new Error("Datos de planta no encontrados en la respuesta");
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Error desconocido";
       setError("Error al identificar la planta: " + errorMessage);
-      setDebugInfo(prevInfo => prevInfo + "\nError capturado: " + errorMessage);
       console.error(err);
     } finally {
       setLoading(false);
@@ -220,14 +207,12 @@ export default function ImageUpload() {
   const handleCapture = (file: File) => {
     setImage(file);
     setIsCameraOpen(false);
-    setDebugInfo("Imagen capturada desde la cámara");
   };
 
   const handleOpenCamera = () => {
     setIsCameraOpen(true);
     setImage(null);
     setPlantInfo(null);
-    setDebugInfo("Cámara abierta");
   };
 
   return (
@@ -333,10 +318,6 @@ export default function ImageUpload() {
 
       {plantInfo && <PlantInfo info={plantInfo} />}
 
-      <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-        <h3 className="font-bold mb-2">Información de depuración:</h3>
-        <pre className="whitespace-pre-wrap overflow-x-auto">{debugInfo}</pre>
-      </div>
     </div>
   );
 }

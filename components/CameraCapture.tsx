@@ -10,20 +10,22 @@ export default function CameraCapture({ onCapture }: CameraCaptureProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Función para iniciar la cámara
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { exact: "environment" } },
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-        setCameraStream(stream);
+  const startCamera = useCallback(async () => {
+    if (!cameraStream) { // Solo inicia la cámara si no hay una ya activa
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { exact: "environment" } },
+        });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+          setCameraStream(stream);
+        }
+      } catch (err) {
+        console.error("No se pudo acceder a la cámara:", err);
       }
-    } catch (err) {
-      console.error("No se pudo acceder a la cámara:", err);
     }
-  };
+  }, [cameraStream]);
 
   // Función para tomar la foto
   const handleTakePhoto = async () => {
@@ -56,11 +58,11 @@ export default function CameraCapture({ onCapture }: CameraCaptureProps) {
   }, [cameraStream]);
 
   useEffect(() => {
-    startCamera();
+    startCamera(); // Inicia la cámara al montar el componente
     return () => {
       stopCamera(); // Detener la cámara cuando el componente se desmonte
     };
-  }, [stopCamera]); // No es necesario incluir 'stopCamera' en las dependencias
+  }, [startCamera, stopCamera]); // Agregar las dependencias correctamente
 
   return (
     <div className="w-full max-w-md mx-auto">
