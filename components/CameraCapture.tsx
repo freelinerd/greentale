@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 
 interface CameraCaptureProps {
   onCapture: (file: File) => void;
@@ -13,7 +13,7 @@ export default function CameraCapture({ onCapture }: CameraCaptureProps) {
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { exact: "environment" } }, // Usa la cámara trasera en móviles
+        video: { facingMode: { exact: "environment" } },
       });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -38,14 +38,14 @@ export default function CameraCapture({ onCapture }: CameraCaptureProps) {
         const dataUrl = canvas.toDataURL("image/jpeg");
         const blob = await fetch(dataUrl).then((res) => res.blob());
         const file = new File([blob], "photo.jpg", { type: "image/jpeg" });
-        onCapture(file); // Envía la foto tomada al componente padre
-        stopCamera(); // Detiene la cámara después de tomar la foto
+        onCapture(file);
+        stopCamera();
       }
     }
   };
 
   // Función para detener la cámara
-  const stopCamera = () => {
+  const stopCamera = useCallback(() => {
     if (cameraStream) {
       cameraStream.getTracks().forEach((track) => track.stop());
       setCameraStream(null);
@@ -53,15 +53,14 @@ export default function CameraCapture({ onCapture }: CameraCaptureProps) {
         videoRef.current.srcObject = null;
       }
     }
-  };
+  }, [cameraStream]);
 
   useEffect(() => {
     startCamera();
-
     return () => {
       stopCamera(); // Detener la cámara cuando el componente se desmonte
     };
-  }, []);
+  }, [stopCamera]); // No es necesario incluir 'stopCamera' en las dependencias
 
   return (
     <div className="w-full max-w-md mx-auto">
