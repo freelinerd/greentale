@@ -33,8 +33,8 @@ export async function POST(request: NextRequest) {
         "Cuidados: Care instructions (Regado: watering, Luz: sunlight, Tierra: soil)\n" +
         "-\n" +
         "Tiempo que tarda en dar frutos: Time to bear fruit o Fruit-bearing time.\n" +
-        "Tiempo que tarda en germinar semillas: Seed germination time or Time for seed             germination.\n" +
-        "Clima adecuado para la planta: Suitable climate for the plant or Optimal climate         conditions for the plant.\n",
+        "Tiempo que tarda en germinar semillas: Seed germination time or Time for seed germination.\n" +
+        "Clima adecuado para la planta: Suitable climate for the plant or Optimal climate conditions for the plant.\n",
       ...imageParts,
     ]);
 

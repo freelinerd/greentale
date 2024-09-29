@@ -17,4 +17,6 @@ export interface PlantInfoType {
   }
   
   // Si tienes otros tipos o interfaces que quieras definir, añádelos aquí
+
+  
   
