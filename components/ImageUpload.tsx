@@ -3,7 +3,7 @@
 import { useState } from "react";
 import CameraCapture from "./CameraCapture";
 import Image from "next/image";
-import { ChevronDown, ChevronUp } from 'lucide-react'
+//import { ChevronDown, ChevronUp } from 'lucide-react'
 
 interface PlantInfoType {
   commonName: string;
@@ -28,75 +28,69 @@ const PlantInfo: React.FC<PlantInfoProps> = ({ info }) => {
   const [showAdditional, setShowAdditional] = useState(true);
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 bg-gradient-to-br from-green-100 to-green-100 rounded-xl shadow-lg border border-green-200">
-      <h2 className="text-3xl font-bold mb-1 text-green-800">{info.commonName}</h2>
-      <p className="text-xl italic text-green-900 mb-4">{info.scientificName}</p>
-      
-      <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
-        <h3 className="text-lg font-semibold text-green-700 mb-2">Descripción</h3>
-        <p className="text-gray-700">{info.description}</p>
+    <div className="w-full max-w-md mx-auto mt-8 bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="bg-green-100 p-4">
+        <h2 className="text-2xl font-bold text-green-800">{info.commonName}</h2>
+        <p className="text-sm italic text-green-600">{info.scientificName}</p>
       </div>
-      
-      <div className="bg-white rounded-lg shadow-sm mb-4">
-        <button 
-          className="w-full p-4 text-left flex justify-between items-center"
-          onClick={() => setShowCare(!showCare)}
-        >
-          <h3 className="text-lg font-semibold text-green-700">Cuidados</h3>
-          {showCare ? <ChevronUp className="text-green-700" /> : <ChevronDown className="text-green-700" />}
-        </button>
-        {showCare && (
-          <div className="p-4 pt-0">
-            <ul className="space-y-2">
-              <li className="flex items-center">
+      <div className="p-4">
+        <p className="text-gray-700 mb-4">{info.description}</p>
+        
+        <div className="mb-2">
+          <button
+            className="w-full text-left p-2 bg-green-50 text-green-700 font-semibold rounded-lg focus:outline-none"
+            onClick={() => setShowCare(!showCare)}
+          >
+            Cuidados {showCare ? '▲' : '▼'}
+          </button>
+          {showCare && (
+            <div className="mt-2 pl-2">
+              <div className="flex items-center mb-1">
                 <span className="mr-2">💧</span>
                 <span className="font-medium w-20">Regado:</span>
                 <span className="text-gray-700">{info.care.watering}</span>
-              </li>
-              <li className="flex items-center">
+              </div>
+              <div className="flex items-center mb-1">
                 <span className="mr-2">☀️</span>
                 <span className="font-medium w-20">Luz:</span>
                 <span className="text-gray-700">{info.care.sunlight}</span>
-              </li>
-              <li className="flex items-center">
+              </div>
+              <div className="flex items-center">
                 <span className="mr-2">🌱</span>
                 <span className="font-medium w-20">Tierra:</span>
                 <span className="text-gray-700">{info.care.soil}</span>
-              </li>
-            </ul>
-          </div>
-        )}
-      </div>
-      
-      <div className="bg-white rounded-lg shadow-sm">
-        <button 
-          className="w-full p-4 text-left flex justify-between items-center"
-          onClick={() => setShowAdditional(!showAdditional)}
-        >
-          <h3 className="text-lg font-semibold text-green-700">Información Adicional</h3>
-          {showAdditional ? <ChevronUp className="text-green-700" /> : <ChevronDown className="text-green-700" />}
-        </button>
-        {showAdditional && (
-          <div className="p-4 pt-0">
-            <ul className="space-y-2">
-              <li className="flex items-start">
+              </div>
+            </div>
+          )}
+        </div>
+        
+        <div>
+          <button
+            className="w-full text-left p-2 bg-green-50 text-green-700 font-semibold rounded-lg focus:outline-none"
+            onClick={() => setShowAdditional(!showAdditional)}
+          >
+            Información Adicional {showAdditional ? '▲' : '▼'}
+          </button>
+          {showAdditional && (
+            <div className="mt-2 pl-2">
+              <div className="flex items-start mb-1">
                 <span className="mr-2 mt-1">🍎</span>
                 <span className="font-medium w-40">Tiempo para dar frutos:</span>
                 <span className="text-gray-700">{info.fruitBearingTime}</span>
-              </li>
-              <li className="flex items-start">
+              </div>
+              <div className="flex items-start mb-1">
                 <span className="mr-2 mt-1">🌱</span>
                 <span className="font-medium w-40">Germinación de semillas:</span>
                 <span className="text-gray-700">{info.seedGerminationTime}</span>
-              </li>
-              <li className="flex items-start">
+              </div>
+              <div className="flex items-start">
                 <span className="mr-2 mt-1">🌡️</span>
                 <span className="font-medium w-40">Clima adecuado:</span>
                 <span className="text-gray-700">{info.suitableClimate}</span>
-              </li>
-            </ul>
-          </div>
-        )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
