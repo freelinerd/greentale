@@ -47,17 +47,17 @@ const PlantInfo: React.FC<PlantInfoProps> = ({ info }) => {
             <div className="mt-2 pl-2">
               <div className="flex items-center mb-1">
                 <span className="mr-2">💧</span>
-                <span className="font-medium w-20">Regado:</span>
+                <span className="font-medium w-20">Regado: </span>
                 <span className="text-gray-700">{info.care.watering}</span>
               </div>
               <div className="flex items-center mb-1">
                 <span className="mr-2">☀️</span>
-                <span className="font-medium w-20">Luz:</span>
+                <span className="font-medium w-20">Luz: </span>
                 <span className="text-gray-700">{info.care.sunlight}</span>
               </div>
               <div className="flex items-center">
                 <span className="mr-2">🌱</span>
-                <span className="font-medium w-20">Tierra:</span>
+                <span className="font-medium w-20">Tierra: </span>
                 <span className="text-gray-700">{info.care.soil}</span>
               </div>
             </div>
