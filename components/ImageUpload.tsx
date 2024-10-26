@@ -3,7 +3,8 @@
 import { useState } from "react";
 import CameraCapture from "./CameraCapture";
 import Image from "next/image";
-//import { ChevronDown, ChevronUp } from 'lucide-react'
+//import PlantInfo from "./PlantInfo";
+import { ChevronDown, ChevronUp } from 'lucide-react'
 
 interface PlantInfoType {
   commonName: string;
@@ -19,74 +20,89 @@ interface PlantInfoType {
   suitableClimate: string;
 }
 
+
 interface PlantInfoProps {
   info: PlantInfoType;
 }
 
-const PlantInfo: React.FC<PlantInfoProps> = ({ info }) => {
+  const PlantInfo: React.FC<PlantInfoProps> = ({ info }) => {
   const [showCare, setShowCare] = useState(true);
   const [showAdditional, setShowAdditional] = useState(true);
 
   return (
     <div className="w-full max-w-md mx-auto mt-8 bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="bg-green-100 p-4">
-        <h2 className="text-2xl font-bold text-green-800">{info.commonName}</h2>
-        <p className="text-sm italic text-green-600">{info.scientificName}</p>
+      <div className="bg-gradient-to-r from-green-400 to-green-600 p-6">
+        <h2 className="text-3xl font-bold text-white">{info.commonName}</h2>
+        <p className="text-sm italic text-green-100">{info.scientificName}</p>
       </div>
-      <div className="p-4">
-        <p className="text-gray-700 mb-4">{info.description}</p>
+      <div className="p-6 space-y-6">
+        <p className="text-gray-700">{info.description}</p>
         
-        <div className="mb-2">
+        <div className="border rounded-lg overflow-hidden">
           <button
-            className="w-full text-left p-2 bg-green-50 text-green-700 font-semibold rounded-lg focus:outline-none"
+            className="w-full flex justify-between items-center p-4 bg-green-50 text-green-700 font-semibold focus:outline-none hover:bg-green-100 transition-colors"
             onClick={() => setShowCare(!showCare)}
           >
-            Cuidados {showCare ? '▲' : '▼'}
+            <span>Cuidados</span>
+            {showCare ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
           </button>
           {showCare && (
-            <div className="mt-2 pl-2">
-              <div className="flex items-center mb-1">
-                <span className="mr-2">💧</span>
-                <span className="font-medium w-20">Regado: </span>
-                <span className="text-gray-700">{info.care.watering}</span>
-              </div>
-              <div className="flex items-center mb-1">
-                <span className="mr-2">☀️</span>
-                <span className="font-medium w-20">Luz: </span>
-                <span className="text-gray-700">{info.care.sunlight}</span>
+            <div className="p-4 bg-white space-y-3">
+              <div className="flex items-center">
+                <span className="text-2xl mr-3">💧</span>
+                <div>
+                  <span className="font-medium text-gray-700">Regado:</span>
+                  <p className="text-gray-600">{info.care.watering}</p>
+                </div>
               </div>
               <div className="flex items-center">
-                <span className="mr-2">🌱</span>
-                <span className="font-medium w-20">Tierra: </span>
-                <span className="text-gray-700">{info.care.soil}</span>
+                <span className="text-2xl mr-3">☀️</span>
+                <div>
+                  <span className="font-medium text-gray-700">Luz:</span>
+                  <p className="text-gray-600">{info.care.sunlight}</p>
+                </div>
+              </div>
+              <div className="flex items-center">
+                <span className="text-2xl mr-3">🌱</span>
+                <div>
+                  <span className="font-medium text-gray-700">Tierra:</span>
+                  <p className="text-gray-600">{info.care.soil}</p>
+                </div>
               </div>
             </div>
           )}
         </div>
         
-        <div>
+        <div className="border rounded-lg overflow-hidden">
           <button
-            className="w-full text-left p-2 bg-green-50 text-green-700 font-semibold rounded-lg focus:outline-none"
+            className="w-full flex justify-between items-center p-4 bg-green-50 text-green-700 font-semibold focus:outline-none hover:bg-green-100 transition-colors"
             onClick={() => setShowAdditional(!showAdditional)}
           >
-            Información Adicional {showAdditional ? '▲' : '▼'}
+            <span>Información Adicional</span>
+            {showAdditional ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
           </button>
           {showAdditional && (
-            <div className="mt-2 pl-2">
-              <div className="flex items-start mb-1">
-                <span className="mr-2 mt-1">🍎</span>
-                <span className="font-medium w-40">Tiempo para dar frutos:</span>
-                <span className="text-gray-700">{info.fruitBearingTime}</span>
-              </div>
-              <div className="flex items-start mb-1">
-                <span className="mr-2 mt-1">🌱</span>
-                <span className="font-medium w-40">Germinación de semillas:</span>
-                <span className="text-gray-700">{info.seedGerminationTime}</span>
+            <div className="p-4 bg-white space-y-3">
+              <div className="flex items-start">
+                <span className="text-2xl mr-3 mt-1">🍎</span>
+                <div>
+                  <span className="font-medium text-gray-700">Tiempo para dar frutos:</span>
+                  <p className="text-gray-600">{info.fruitBearingTime}</p>
+                </div>
               </div>
               <div className="flex items-start">
-                <span className="mr-2 mt-1">🌡️</span>
-                <span className="font-medium w-40">Clima adecuado:</span>
-                <span className="text-gray-700">{info.suitableClimate}</span>
+                <span className="text-2xl mr-3 mt-1">🌱</span>
+                <div>
+                  <span className="font-medium text-gray-700">Germinación de semillas:</span>
+                  <p className="text-gray-600">{info.seedGerminationTime}</p>
+                </div>
+              </div>
+              <div className="flex items-start">
+                <span className="text-2xl mr-3 mt-1">🌡️</span>
+                <div>
+                  <span className="font-medium text-gray-700">Clima adecuado:</span>
+                  <p className="text-gray-600">{info.suitableClimate}</p>
+                </div>
               </div>
             </div>
           )}
@@ -272,46 +288,21 @@ export default function ImageUpload() {
         </div>
       )}
 
-      {image && !plantInfo && (
-        <button
-          className="mt-4 w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700"
-          onClick={handleIdentifyPlant}
-          disabled={loading}
-        >
-          {loading ? (
-            <div className="flex justify-center items-center">
-              <svg
-                className="animate-spin h-5 w-5 mr-3 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                ></path>
-              </svg>
-              Identificando planta...
-            </div>
-          ) : (
-            "Identificar planta"
-          )}
-        </button>
+{image && !plantInfo && (
+        <div className="mt-4 space-y-4">
+          <button
+            className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700"
+            onClick={handleIdentifyPlant}
+            disabled={loading}
+          >
+            {loading ? "Identificando planta..." : "Identificar planta"}
+          </button>
+        </div>
       )}
 
       {error && <p className="mt-4 text-center text-red-500">{error}</p>}
 
       {plantInfo && <PlantInfo info={plantInfo} />}
-
     </div>
   );
 }

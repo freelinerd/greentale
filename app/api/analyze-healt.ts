@@ -24,28 +24,31 @@ export async function POST(request: NextRequest) {
     ];
 
     const result = await model.generateContent([
-      "Identify this plant and provide the following information in spanish with no other         format than listing the following information:\n" +
-        "Nombre Comun: Common name\n" +
-        "Nombre Cientifico Scientific name\n" +
+      "Analiza la salud de esta planta y proporciona la siguiente información en español sin ningún otro formato que no sea listar la siguiente información:\n" +
+        "Estado de salud: (Bueno, Regular, o Necesita atención)\n" +
         "-\n" +
-        "Descripción: Brief description\n" +
+        "Problemas detectados:\n" +
+        "- (Lista de problemas, si los hay)\n" +
         "-\n" +
-        "Cuidados: Care instructions (Regado: watering, Luz: sunlight, Tierra: soil)\n" +
-        "-\n" +
-        "Tiempo que tarda en dar frutos: Time to bear fruit o Fruit-bearing time.\n" +
-        "Tiempo que tarda en germinar semillas: Seed germination time or Time for seed germination.\n" +
-        "Clima adecuado para la planta: Suitable climate for the plant or Optimal climate conditions for the plant.\n",
+        "Recomendaciones:\n" +
+        "- (Lista de recomendaciones para mejorar la salud de la planta)\n",
       ...imageParts,
     ]);
 
-    const plantInfo = result.response.text();
+    const plantHealth = result.response.text();
 
-    return NextResponse.json({ plantInfo });
+    return NextResponse.json({ plantHealth });
   } catch (error) {
-    console.error("Error identifying plant:", error);
+    console.error("Error al analizar la salud de la planta:", error);
     return NextResponse.json(
-      { error: "Failed to identify plant" },
+      { error: "Error al analizar la salud de la planta" },
       { status: 500 },
     );
   }
 }
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
